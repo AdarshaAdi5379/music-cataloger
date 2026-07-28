@@ -1,0 +1,19 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!mvnw
+!mvnw.cmd
+
+### Spring Boot ###
+.mvn/
+.idea
+.DS_Store
+*.cls
+*.class
+*.jar
+*.war
+*.ear
+*.logs
+*.import
+.project
+.classpath
+.settings

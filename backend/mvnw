@@ -1,0 +1,59 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Apache Maven Wrapper Executable Script
+# ----------------------------------------------------------------------------
+
+# OS specific support.  $var _must_ be set to true or false.
+cygwin=false
+darwin=false
+msys=false
+case "`uname`" in
+  CYGWIN*) cygwin=true ;;
+  Darwin*) darwin=true ;;
+  MINGW*) msys=true ;;
+esac
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if $cygwin ; then
+  [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+fi
+
+# Locate directory containing this script
+PRG="$0"
+while [ -h "$PRG" ]; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG=`dirname "$PRG"`/"$link"
+  fi
+done
+BASE_DIR=`dirname "$PRG"`
+
+WRAPPER_JAR="$BASE_DIR/.mvn/wrapper/maven-wrapper.jar"
+WRAPPER_PROPERTIES="$BASE_DIR/.mvn/wrapper/maven-wrapper.properties"
+
+if [ ! -e "$WRAPPER_JAR" ]; then
+  mkdir -p "$BASE_DIR/.mvn/wrapper"
+  mvn_wrapper_url=""
+  if [ -e "$WRAPPER_PROPERTIES" ]; then
+    mvn_wrapper_url=$(sed -n 's/^wrapperUrl=//p' "$WRAPPER_PROPERTIES")
+  fi
+  if [ -z "$mvn_wrapper_url" ]; then
+    mvn_wrapper_url="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.3.2/maven-wrapper-3.3.2.jar"
+  fi
+  if command -v wget >/dev/null 2>&1; then
+    wget -q -O "$WRAPPER_JAR" "$mvn_wrapper_url"
+  elif command -v curl >/dev/null 2>&1; then
+    curl -s -o "$WRAPPER_JAR" "$mvn_wrapper_url"
+  fi
+fi
+
+if [ -z "$JAVA_HOME" ] && [ -d "/usr/lib/jvm/java-21-openjdk-amd64" ]; then
+  export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+fi
+
+CLASSPATH="$WRAPPER_JAR"
+
+exec java -classpath "$CLASSPATH" "-Dmaven.multiModuleProjectDirectory=$BASE_DIR" org.apache.maven.wrapper.MavenWrapperMain "$@"
